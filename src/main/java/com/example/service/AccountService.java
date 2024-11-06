@@ -1,26 +1,29 @@
 package com.example.service;
 
-import javax.print.PrintService;
+import java.util.List;
+
+// import javax.print.PrintService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-// import repository.AccountRepository;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.entity.Account;
 import com.example.repository.AccountRepository;
+
 @Service
-public class AccountService {
-    private AccountRepository accountRepo; 
+public class AccountService{
+    
     @Autowired
+    private AccountRepository accountRepo; 
     public AccountService(AccountRepository accountRepo){
         this.accountRepo = accountRepo;
     }
+    //get all accounts
+    public List<Account> getAccountList(){return (List<Account>) accountRepo.findAll();}
+
     //registerAccount
     
-    public Account registerAccount(Account account){
-        
-        return null;
+    public void registerAccount(Account newAccount){
+        accountRepo.save(newAccount);
     }
 }

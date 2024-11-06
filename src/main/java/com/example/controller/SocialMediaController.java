@@ -1,5 +1,8 @@
 package com.example.controller;
 
+import org.apache.catalina.core.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,15 +21,26 @@ import com.example.service.MessageService;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 @Controller
-@RequestMapping
 public class SocialMediaController {
-    AccountService accountService = new AccountService();
-    MessageService messageService = new MessageService();
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private MessageService messageService;
+
+    SocialMediaController(){}
+    SocialMediaController(AccountService accountService, MessageService messageService){
+        this.accountService = accountService;
+        this.messageService = messageService;
+    }
+    // @Autowired
+    // SocialMediaController(MessageService messageService){
+    //     this.messageService = messageService;
+    // }
     //creating post endpoint for user registration
-    @PostMapping("/register")
     // @RequestMapping("entity/Account")
-    public @ResponseBody ResponseEntity<Account> registerUser(@RequestBody Account newAccount){
-        AccountService.registerAccount(newAccount);
-        return null;
+    @PostMapping("/register")
+    public @ResponseBody ResponseEntity<String> registerUser(@RequestBody Account newAccount){
+        accountService.registerAccount(newAccount);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Successfully Registered");
     }
 }
