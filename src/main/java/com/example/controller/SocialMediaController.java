@@ -41,6 +41,6 @@ public class SocialMediaController {
     @PostMapping("/register")
     public @ResponseBody ResponseEntity<String> registerUser(@RequestBody Account newAccount){
         accountService.registerAccount(newAccount);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Successfully Registered");
+        return ResponseEntity.status(HttpStatus.OK).body("Successfully Registered");
     }
 }
