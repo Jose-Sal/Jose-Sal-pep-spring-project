@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
 
@@ -42,5 +43,20 @@ public class SocialMediaController {
     public @ResponseBody ResponseEntity<String> registerUser(@RequestBody Account newAccount){
         accountService.registerAccount(newAccount);
         return ResponseEntity.status(HttpStatus.OK).body("Successfully Registered");
+    }
+
+    @PostMapping("/login")
+    public @ResponseBody ResponseEntity<Account> login(@RequestBody Account loginAccount){
+        Account login = accountService.login(loginAccount.getUsername(), loginAccount.getPassword());
+        if(login != null){
+            return ResponseEntity.ok(login);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // create new message
+    @PostMapping("/messages")
+    public @ResponseBody ResponseEntity<Message> createMessage(@RequestBody Message newmMessage){
+        return ResponseEntity.ok(messageService.createNewMessage(newmMessage));
     }
 }

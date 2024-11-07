@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.Optional;
 
 // import javax.print.PrintService;
 
@@ -26,6 +27,13 @@ public class AccountService{
     public void registerAccount(Account newAccount){
         accountRepo.save(newAccount);
     }
-}
 
-// org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'socialMediaController': Unsatisfied dependency expressed through field 'messageService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.example.service.MessageService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+    //login account
+    public Account login(String username, String password){
+        Optional<Account> getAccount = accountRepo.findByUsernameAndPassword(username, password);
+        if(getAccount.isPresent()){
+            return getAccount.get();
+        }
+        return null;
+    }
+}
