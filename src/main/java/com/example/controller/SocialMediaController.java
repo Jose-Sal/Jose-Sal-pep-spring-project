@@ -1,10 +1,13 @@
 package com.example.controller;
 
+import java.util.List;
+
 import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,4 +62,11 @@ public class SocialMediaController {
     public @ResponseBody ResponseEntity<Message> createMessage(@RequestBody Message newmMessage){
         return ResponseEntity.ok(messageService.createNewMessage(newmMessage));
     }
+
+    //get all messages
+    @GetMapping("/messages")
+    public @ResponseBody ResponseEntity<List<Message>> getAllMessages(){
+        return ResponseEntity.ok(messageService.getAllMessages());
+    }
+
 }
