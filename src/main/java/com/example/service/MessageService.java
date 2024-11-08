@@ -44,8 +44,15 @@ public class MessageService {
     }
 
     //update messageText by id
-    public String updateString(String messageText){
-        return null;
+    public int updateMessage(int id, Message message){
+        Optional<Message> messageFound = messageRepo.findById(id);
+        if(messageFound.isPresent()){
+            Message messageToUpdate = messageFound.get();
+            messageToUpdate.setMessageText(message.getMessageText());
+            messageRepo.save(messageToUpdate);
+            return 1;
+        }
+        else{return 0;}
     }
 }
 

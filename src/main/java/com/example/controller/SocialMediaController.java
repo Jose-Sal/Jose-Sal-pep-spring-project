@@ -89,9 +89,19 @@ public class SocialMediaController {
         }
         return ResponseEntity.ok(rowDeleted);
     }
-
+    //
     @PatchMapping("/messages/{messageId}")
-    public @ResponseBody ResponseEntity<String> updateTextById(@PathVariable int messageId){
+    public @ResponseBody ResponseEntity<?> updateTextById(@PathVariable int messageId, @RequestBody Message updatedMessage){
+        int rowDeleted = messageService.updateMessage(messageId, updatedMessage);
+        if(rowDeleted == 0){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.ok(rowDeleted);    
+    }
+
+    //find all message by a user
+    @GetMapping("accounts/{accountId}/messages")
+    public @ResponseBody ResponseEntity<List<Message>> getAllByAccounts(@PathVariable int accountId){
         return null;
     }
 }
