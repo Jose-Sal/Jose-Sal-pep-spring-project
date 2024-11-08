@@ -54,5 +54,11 @@ public class MessageService {
         }
         else{return 0;}
     }
+
+    // find all messages that matches user id
+    public List<Message> getAllFromUser(int userId){
+
+        return messageRepo.findBypostedBy(userId).get();
+    }
 }
 

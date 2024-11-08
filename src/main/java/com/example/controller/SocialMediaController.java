@@ -102,6 +102,6 @@ public class SocialMediaController {
     //find all message by a user
     @GetMapping("accounts/{accountId}/messages")
     public @ResponseBody ResponseEntity<List<Message>> getAllByAccounts(@PathVariable int accountId){
-        return null;
+        return ResponseEntity.ok( messageService.getAllFromUser(accountId));
     }
 }
