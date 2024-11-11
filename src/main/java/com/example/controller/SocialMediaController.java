@@ -66,7 +66,11 @@ public class SocialMediaController {
     // create new message
     @PostMapping("/messages")
     public @ResponseBody ResponseEntity<Message> createMessage(@RequestBody Message newmMessage){
-        return ResponseEntity.ok(messageService.createNewMessage(newmMessage));
+        Message createdMessage = messageService.createNewMessage(newmMessage);
+        if(createdMessage != null){
+            return ResponseEntity.ok(createdMessage);
+        }
+        else{ return new ResponseEntity<>(createdMessage, HttpStatus.BAD_REQUEST);}
     }
 
     //get all messages

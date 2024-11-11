@@ -16,9 +16,15 @@ public class MessageService {
     public MessageService(MessageRepository messageRepo){
         this.messageRepo = messageRepo;
     }
+
     //create new message
-    public Message createNewMessage(Message newmMessage){
-        return messageRepo.save(newmMessage);
+    public Message createNewMessage(Message newMessage){
+        if(newMessage.getMessageText().isEmpty() || newMessage.getMessageText().length() > 255 || newMessage.getMessageText().isBlank()){
+            return null;
+        }
+        else{
+            return messageRepo.save(newMessage);
+        }
     }
     //get all messages
     public List<Message> getAllMessages(){
