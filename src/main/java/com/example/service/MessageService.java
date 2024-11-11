@@ -8,18 +8,21 @@ import org.springframework.stereotype.Service;
 
 import com.example.entity.Message;
 import com.example.repository.MessageRepository;
+import com.example.repository.AccountRepository;
 
 @Service
 public class MessageService {
     @Autowired
     MessageRepository messageRepo;
-    public MessageService(MessageRepository messageRepo){
+    AccountRepository accountRepo;
+    public MessageService(MessageRepository messageRepo, AccountRepository accountRepo){
         this.messageRepo = messageRepo;
+        this.accountRepo = accountRepo;
     }
 
     //create new message
     public Message createNewMessage(Message newMessage){
-        if(newMessage.getMessageText().isEmpty() || newMessage.getMessageText().length() > 255 || newMessage.getMessageText().isBlank()){
+        if(newMessage.getMessageText().isEmpty() || newMessage.getMessageText().length() > 255 || !accountRepo.existsById(newMessage.getPostedBy())){
             return null;
         }
         else{
