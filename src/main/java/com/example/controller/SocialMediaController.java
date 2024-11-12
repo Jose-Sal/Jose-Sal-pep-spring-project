@@ -42,16 +42,21 @@ public class SocialMediaController {
         this.accountService = accountService;
         this.messageService = messageService;
     }
-    // @Autowired
-    // SocialMediaController(MessageService messageService){
-    //     this.messageService = messageService;
-    // }
-    //creating post endpoint for user registration
-    // @RequestMapping("entity/Account")
+
+    //register user account using PostMapping
     @PostMapping("/register")
-    public @ResponseBody ResponseEntity<String> registerUser(@RequestBody Account newAccount){
-        accountService.registerAccount(newAccount);
-        return ResponseEntity.status(HttpStatus.OK).body("Successfully Registered");
+    public @ResponseBody ResponseEntity<?> registerUser(@RequestBody Account newAccount){
+        int status = accountService.registerAccount(newAccount);
+        switch (status) {
+            case 1:
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            case 2:
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Username Already Exist");
+                
+            default:
+                return ResponseEntity.ok(newAccount);
+        }
+        
     }
 
     @PostMapping("/login")
@@ -60,7 +65,8 @@ public class SocialMediaController {
         if(login != null){
             return ResponseEntity.ok(login);
         }
-        return ResponseEntity.notFound().build();
+        else{return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);}
+        
     }
 
     // create new message
@@ -93,12 +99,12 @@ public class SocialMediaController {
         }
         return ResponseEntity.ok(rowDeleted);
     }
-    //
+    //update message text
     @PatchMapping("/messages/{messageId}")
     public @ResponseBody ResponseEntity<?> updateTextById(@PathVariable int messageId, @RequestBody Message updatedMessage){
         int rowDeleted = messageService.updateMessage(messageId, updatedMessage);
         if(rowDeleted == 0){
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(rowDeleted);    
     }

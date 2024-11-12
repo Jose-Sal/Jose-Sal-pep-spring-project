@@ -55,13 +55,16 @@ public class MessageService {
     //update messageText by id
     public int updateMessage(int id, Message message){
         Optional<Message> messageFound = messageRepo.findById(id);
-        if(messageFound.isPresent()){
+        while(messageFound.isPresent()){
+            if(message.getMessageText().length() > 255 || message.getMessageText().isEmpty()){
+                return 0;
+            }
             Message messageToUpdate = messageFound.get();
             messageToUpdate.setMessageText(message.getMessageText());
             messageRepo.save(messageToUpdate);
             return 1;
         }
-        else{return 0;}
+        return 0;
     }
 
     // find all messages that matches user id

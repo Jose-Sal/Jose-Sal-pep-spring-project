@@ -24,8 +24,20 @@ public class AccountService{
 
     //registerAccount
     
-    public void registerAccount(Account newAccount){
-        accountRepo.save(newAccount);
+    public int registerAccount(Account newAccount){
+        if(newAccount.getUsername().isBlank() || newAccount.getPassword().length() < 4){
+            //client error
+            return 1;
+        }
+        else if(accountRepo.findByUsername(newAccount.getUsername()) != null){
+            //conflict
+            return 2;
+        }
+        else{
+            //success
+            accountRepo.save(newAccount);
+            return 0;
+        }
     }
 
     //login account
