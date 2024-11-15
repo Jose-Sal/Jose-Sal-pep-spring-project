@@ -24,20 +24,17 @@ public class AccountService{
 
     //registerAccount
     
-    public int registerAccount(Account newAccount){
+    public Account registerAccount(Account newAccount) throws IllegalArgumentException{
         if(newAccount.getUsername().isBlank() || newAccount.getPassword().length() < 4){
             //client error
-            return 1;
+            throw new IllegalArgumentException("Criteria not met");
         }
-        else if(accountRepo.findByUsername(newAccount.getUsername()) != null){
+        else if(accountRepo.findByUsername(newAccount.getUsername()).isPresent()){
             //conflict
-            return 2;
+            throw new IllegalArgumentException("Username already exist");
         }
-        else{
             //success
-            accountRepo.save(newAccount);
-            return 0;
-        }
+            return accountRepo.save(newAccount);
     }
 
     //login account

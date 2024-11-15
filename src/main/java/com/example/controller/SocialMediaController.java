@@ -46,16 +46,13 @@ public class SocialMediaController {
     //register user account using PostMapping
     @PostMapping("/register")
     public @ResponseBody ResponseEntity<?> registerUser(@RequestBody Account newAccount){
-        int status = accountService.registerAccount(newAccount);
-        switch (status) {
-            case 1:
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            case 2:
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Username Already Exist");
-                
-            default:
-                return ResponseEntity.ok(newAccount);
+        try{
+            Account registeredAcc = accountService.registerAccount(newAccount);
+            return ResponseEntity.ok(registeredAcc);
+        }catch(IllegalArgumentException ex){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
+        
         
     }
 
